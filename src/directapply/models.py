@@ -68,18 +68,18 @@ class SearchCriteria:
     # From wizzard page "Upload Resume"
     # TODO: Consider changing this to a file path or a file object instead of a string, depending on how the resume is handled in the application/ able to be stored in DB.
     #       Can always convert to Path(str) in scraping logic and store as string in DB.
-    resume_file_path: Optional[str] = None # Path to the uploaded resume file (string)
+    resume_file_path: Optional[str] = field(default=None) # Path to the uploaded resume file (string)
     
     # From wizzard page "Finish / Summary"
     notification_methods: List[Dict[str, bool]] = field(default_factory=set_default_notification_methods) # Select to change default notification methods (email, sms, dashboard) from the options provided in the Finish / Summary page
     
     # Contact information for notifications, if none is requested, information will populate to dashboard when user opens application
-    email_address: Optional[str] = None # Email address for email notifications (string)
-    sms_number: Optional[str] = None # Phone number for SMS notifications (string)
-    dashboard_notifications: Optional[bool] = None # Whether to show notifications on the dashboard (boolean)
+    email_address: Optional[str] = field(default=None) # Email address for email notifications (string)
+    sms_number: Optional[str] = field(default=None) # Phone number for SMS notifications (string)
+    dashboard_notifications: Optional[bool] = field(default=None) # Whether to show notifications on the dashboard (boolean)
     
-    most_recent_listing_age: datetime = DEFAULT_MOST_RECENT_LISTING_DATE
-    listing_age_range: timedelta = timedelta(days=DEFAULT_LISTING_TIMEDELTA_DAYS) # Select a listing age range (timedelta) from the options provided in the Finish / Summary page
+    most_recent_listing_age: datetime = field(default=DEFAULT_MOST_RECENT_LISTING_DATE)
+    listing_age_range: timedelta = field(default=timedelta(days=DEFAULT_LISTING_TIMEDELTA_DAYS)) # Select a listing age range (timedelta) from the options provided in the Finish / Summary page
     # Listings will have to be within the range of [earliest_listing_date: datetime, earliest_listing_date - listing_age_range: timedelta]
     # Will create time window for listings age in later logic
 
