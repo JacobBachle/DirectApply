@@ -42,7 +42,7 @@ def set_default_notification_methods():
 #
 # Structure of wizzard output, used to filter and score listings in the pipeline
 #
-@dataclass
+@dataclass(repr=False,eq=True)
 class SearchCriteria:
     #
     # From wizzard page "Welcome"
@@ -51,7 +51,9 @@ class SearchCriteria:
     # TODO: Is UUID created now or in sqlite pipeline?
     search_ID: int = 0 # Unique ID for the search criteria, used to identify the search criteria in the DB and other parts of the program
     
+    #
     # From wizzard page "Preferences"
+    #
     job_titles: List[str] = field(default_factory=list) # Select one or more from list of job titles (strings) inside of Job_Title_Database
     experience_level: List[str] = field(default_factory=list) # Select one or more from list of experience levels (strings) inside of Experience_Level_Database
     employment_type: List[str] = field(default_factory=list) # Select one or more from list of employment types (strings) inside of Employment_Type_Database
@@ -59,18 +61,25 @@ class SearchCriteria:
     primary_business_group: List[str] = field(default_factory=list) # Select one or more from list of primary business groups (strings) inside of Primary_Business_Group_Database
     salary_range: List[str] = field(default_factory=list) # Select one or more from list of salary ranges (strings) inside of Salary_Range_Database
 
+    #
     # From wizzard page "Target Locations"
+    #
     target_locations: List[str] = field(default_factory=list) # Select one or more from list of target locations (strings)()
     
+    #
     # From wizzard page "Target Companies"
+    #
     target_companies: List[str] = field(default_factory=list) # Select one or more from list of target companies (strings) inside of Target_Companies_Database
     
+    #
     # From wizzard page "Upload Resume"
     # TODO: Consider changing this to a file path or a file object instead of a string, depending on how the resume is handled in the application/ able to be stored in DB.
     #       Can always convert to Path(str) in scraping logic and store as string in DB.
     resume_file_path: Optional[str] = field(default=None) # Path to the uploaded resume file (string)
     
+    #
     # From wizzard page "Finish / Summary"
+    #
     notification_methods: List[Dict[str, bool]] = field(default_factory=set_default_notification_methods) # Select to change default notification methods (email, sms, dashboard) from the options provided in the Finish / Summary page
     
     # Contact information for notifications, if none is requested, information will populate to dashboard when user opens application
@@ -89,7 +98,7 @@ class SearchCriteria:
 # The dashboard access these listings from the DB
 #
 #####################################
-@dataclass
+@dataclass(repr=True,eq=True)
 class JobListing:
 
     title: str
@@ -100,7 +109,7 @@ class JobListing:
     description: str = ""
     source: str = ""
     score: float = 0.0  # filled in by pipeline.py
-    id: str = 0 # UUID for the job listing used to ensure no duplicates. Uses hash of other fields to generate a unique ID
+    #id: str = 0 # UUID for the job listing used to ensure no duplicates. Uses hash of other fields to generate a unique ID
 
     def as_row(self) -> tuple:
         """Flat tuple for SQLite inserts (order must match storage.py)."""
