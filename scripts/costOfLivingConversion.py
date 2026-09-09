@@ -155,9 +155,16 @@ def convert_salary(salary, source_state, target_state, account_for_tax=True):
 
 # Simple terminal input and output for standalone use
 if __name__ == "__main__":
+    current_state = input("Current state: ")
+    desired_state = input("Desired state: ")
     salary = float(input("Salary: "))
-    source_state = input("Current state: ")
-    target_state = input("Target state: ")
+    which = input("Is that salary for your (c)urrent or (d)esired state? [c/d]: ")
+
+    # Pick which state the salary is for; the other state is the answer.
+    if which.strip().lower().startswith("d"):
+        source_state, target_state = desired_state, current_state
+    else:
+        source_state, target_state = current_state, desired_state
 
     try:
         equivalent = convert_salary(salary, source_state, target_state)
