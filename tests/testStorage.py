@@ -12,3 +12,4 @@ testDir = [DB_DIRECTORY,DB_GENERATED_DIRECTORY,DB_SEARCH_CRITERIA_DIRECTORY,
 
 for dir in testDir:
     storage.printPath_DB(dir)
+    
